@@ -78,7 +78,7 @@ app.config_from_object(settings)
 app.conf.beat_schedule = {
     'run-function-1-at-some-time':{
         'task': 'users.tasks.send_mail_func',
-        'schedule':crontab(hour=2, minute=38), 
+        'schedule':crontab(hour=6, minute=18), 
     },
 }
 

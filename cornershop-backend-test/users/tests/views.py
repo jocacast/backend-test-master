@@ -3,6 +3,9 @@ from django.test import Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.contrib.auth.models import User
+from unittest.mock import MagicMock
+from users.tasks import add, send_mail_func
+
 
 class TestAppViews(TestCase):
 
@@ -10,6 +13,7 @@ class TestAppViews(TestCase):
         self.client = Client()
         self.login_url = reverse('login_user')
         self.logout_url = reverse('logout_user')
+        self.register_url = reverse('register_user')
         #variables for success login
         self.credentials = {
             'username': 'jocacast',
@@ -17,13 +21,29 @@ class TestAppViews(TestCase):
         self.user = User.objects.create_user(**self.credentials)
         self.correct_response = self.client.post(self.login_url, self.credentials, follow=True)
 
-        #variable for incorrect login
+        #variables for incorrect login
         self.non_existing_user_credentials = {
             'username' : 'juan',
             'password' : '12345'
         }
         self.incorrect_credentials_message = 'Username does not exist'
         self.incorrect_response = self.client.post(self.login_url, self.non_existing_user_credentials)
+
+        #variables for correct register
+        self.correct_register_form = {
+            'username' : 'anacast',
+            'email' : 'anacast@email.com',
+            'password1' : 'QUERTY08xp',
+            'password2' : 'QUERTY08xp',
+        }
+
+        #variables for incorrect register
+        self.incorrect_register_form = {
+            'username' : 'anacast',
+            'email' : 'anacast@email.com',
+            'password1' : 'QUERTY08xp',
+            'password2' : '12345',
+        }    
         
     def test_login_get (self):
         response = self.client.get(self.login_url)
@@ -45,4 +65,21 @@ class TestAppViews(TestCase):
     def test_logout(self):
         response = self.client.get(self.logout_url)
         self.assertRedirects(response, '/login/')
- 
+    
+    def test_signup_form(self):
+        response = self.client.post(self.register_url,self.correct_register_form)
+        self.assertRedirects(response, '/')
+
+    def test_sign_up_form_error(self):
+        self.assertRaises(Exception, self.client.post(self.register_url, self.incorrect_register_form))
+
+    def test_add_task(self):
+        rst = add.apply(args=(4, 4)).get()
+        self.assertEquals(8, rst)
+
+    def test_send_email_task(self):
+        rst = send_mail_func.apply().get()
+        self.assertEquals("Done" , rst)
+
+    
+    

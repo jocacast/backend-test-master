@@ -13,8 +13,6 @@ class Profile (models.Model):
     name = models.CharField(max_length=200, blank = True, null=True)
     email = models.EmailField(max_length=500, null=True, blank=True)
     username = models.CharField(max_length=200, blank = True, null=True)
-    is_admin = models.BooleanField(default=True)
-    
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

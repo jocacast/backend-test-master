@@ -1,9 +1,17 @@
 {%block content%}
 {%load static%}
-<h1>Options Menu</h1>
+<h1>Daily Meal</h1>
 <div id="menu">
     <ul>
       {% if request.user.is_authenticated %}
+        {%if request.user.is_superuser%}
+        <li><a href="{%url 'logout_user' %}">Create Menu || </a></li>
+        <li><a href="{%url 'logout_user' %}">Check Orders || </a></li>
+        <li><a href="{%url 'logout_user' %}">Schedule Message(?) || </a></li>
+        {%else%}
+        <li><a href="{%url 'logout_user' %}">My Orders || </a></li>
+        <li><a href="{%url 'logout_user' %}">My Current Order (shoping cart) || </a></li>
+        {%endif%}
         <li><a href="{%url 'logout_user' %}">Logout</a></li>
       {%else%}
         <li><a href="{%url 'login_user' %}">Login</a></li>

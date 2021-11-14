@@ -58,6 +58,6 @@ def main(request):
     }
     return render(request, 'users/main.html', context)
 
-def test(request):
-    add.delay(3,6)
-    return HttpResponse("Done")
+#def test(request):
+   #add.delay(3,6)
+    #return HttpResponse("Done")

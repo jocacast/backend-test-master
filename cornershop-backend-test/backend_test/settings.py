@@ -48,8 +48,9 @@ INSTALLED_APPS = [
     "django_extensions",
     "backend_test.utils",
     "users.apps.UsersConfig",
+    "meals.apps.MealsConfig",
+    "orders.apps.OrdersConfig",
     "django_celery_beat",
-    "django_slack"
 
 ]
 

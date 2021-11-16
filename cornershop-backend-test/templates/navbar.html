@@ -1,11 +1,16 @@
 {%block content%}
 {%load static%}
+{%if request.user.is_authenticated%}
+<h1>Daily Meal ({{request.user}})</h1>
+{%else%}
 <h1>Daily Meal</h1>
+{%endif%}
 <div id="menu">
     <ul>
       {% if request.user.is_authenticated %}
         {%if request.user.is_superuser%}
-        <li><a href="{%url 'logout_user' %}">Create Menu || </a></li>
+        <li><a href="{%url 'create_meal' %}">Create Meal || </a></li>
+        <li><a href="{%url 'read_meals' %}">My Created Meals || </a></li>
         <li><a href="{%url 'logout_user' %}">Check Orders || </a></li>
         <li><a href="{%url 'logout_user' %}">Schedule Message(?) || </a></li>
         {%else%}

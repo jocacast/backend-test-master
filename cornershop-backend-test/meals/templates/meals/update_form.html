@@ -1,0 +1,18 @@
+{%extends 'main.html'%}
+{%block content%}
+<form method="POST" action="{% url 'update_meal' meal.id%}" class="form auth__form">
+    {%csrf_token%}
+    {% for field in form %}
+    <div>
+        <label>{{field.label}} </label>
+    </br>
+        {{field}}
+        {%for error in field.errors%}
+            <p style="color:red">{{error}}</p>
+        {%endfor%}
+      </div>
+    
+    {%endfor%}
+    </br>
+    <input type="submit" value="Update" />
+{%endblock%}

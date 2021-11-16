@@ -5,5 +5,6 @@ from .utils.healthz import healthz
 urlpatterns = [
     path("healthz", healthz, name="healthz"),
     path('admin/', admin.site.urls),
+    path("meals/", include('meals.urls')),
     path("", include('users.urls'))
 ]

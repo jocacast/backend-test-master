@@ -1,0 +1,15 @@
+{%extends 'main.html'%}
+{%block content%}
+    <h1>My Created Meals</h1>
+    <p>Meals can only be edited and deleted before the slack message is sent (currently 11 am)</p>
+    <hr/>
+    {%for meal in meals%}
+        <h2>{{meal.name}}</h2>
+        <p>{{meal.description}}</p>
+        <p>{{meal.meal_date}}</p>
+        {%if is_editable%}
+        <p><a href="{% url 'update_meal' meal.id%}">Update</a> <a href="{%url 'delete_meal' meal.id%}">Delete</a></p>
+        {%endif%}
+        <p>------------------</p>
+    {%endfor%}
+{%endblock%}

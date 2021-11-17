@@ -1,9 +1,11 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
+
 from celery.schedules import crontab
 
 from .envtools import getenv
+
 
 
 class CelerySettings:
@@ -15,8 +17,8 @@ class CelerySettings:
     CELERY_ACCEPT_CONTENT = ["json"]
     # Time and date settings
     # https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#time-and-date-settings
-    CELERY_ENABLE_UTC = True
-    CELERY_TIMEZONE = "UTC"
+    CELERY_ENABLE_UTC = False
+    CELERY_TIMEZONE = "America/Mexico_City"
     # Task settings
     # https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#task-settings
     CELERY_TASK_SERIALIZER = "json"
@@ -78,7 +80,7 @@ app.config_from_object(settings)
 app.conf.beat_schedule = {
     'run-function-1-at-some-time':{
         'task': 'users.tasks.send_mail_func',
-        'schedule':crontab(hour=6, minute=18), 
+        'schedule':crontab(hour=11, minute=00), 
     },
 }
 

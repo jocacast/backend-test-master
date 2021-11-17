@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "meals.apps.MealsConfig",
     "orders.apps.OrdersConfig",
+    "scheduler.apps.SchedulerConfig",
     "django_celery_beat",
 
 ]

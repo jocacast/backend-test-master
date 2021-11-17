@@ -5,8 +5,10 @@ from .models import Meal
 from django.contrib import messages
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django_celery_beat.models import PeriodicTask
 
-@login_required(login_url='main')
+
+@login_required(login_url='login_user')
 def createMeal(request):
     if not request.user.is_superuser:
         return render(request, 'main.html')
@@ -27,18 +29,25 @@ def createMeal(request):
 
     return render(request, 'meals/create.html', context)
 
-@login_required(login_url='main')
+@login_required(login_url='login_user')
 def readMeals(request):
     if not request.user.is_superuser:
         return render(request, 'main.html')
     meals = Meal.objects.all()
+    periodic_task = PeriodicTask.objects.get(name='send-slack-message')
+    crontab_hour = periodic_task.crontab.hour
+    crontab_minute = periodic_task.crontab.minute
+    crontab_timezone = periodic_task.crontab.timezone
     context = {
         'meals': meals, 
-        'is_editable' : isEditable(),
+        'is_editable' : isEditable(crontab_hour=crontab_hour, crontab_minute = crontab_minute),
+        'crontab_hour' : crontab_hour,
+        'crontab_timezone' : crontab_timezone,
+        'crontab_minute' : crontab_minute
         }
     return render(request, 'meals/read.html', context)
 
-@login_required(login_url='main')
+@login_required(login_url='login_user')
 def updateMeal(request,pk):
     if not request.user.is_superuser:
         return render(request, 'main.html')
@@ -53,9 +62,10 @@ def updateMeal(request,pk):
         'form':form,
         'meal':meal
     }
+
     return render(request, 'meals/update_form.html', context)
 
-@login_required(login_url='main')
+@login_required(login_url='login_user')
 def deleteMeal(request, pk):
     if not request.user.is_superuser:
         return render (request, 'main.html')
@@ -66,15 +76,15 @@ def deleteMeal(request, pk):
     context = {
         'meal': meal
     }
-
     return render(request, 'meals/confirm_delete.html' , context)
 
-def isEditable():
+def isEditable(crontab_hour, crontab_minute):
     now = datetime.now()
-    limit_time = now.replace(hour = 11, minute=0)
-    print(f'Now {now}')
-    print(f'limit time {limit_time}')
+    crontab_hour = int(crontab_hour)
+    crontab_minute = int(crontab_minute)
+    limit_time = now.replace(hour = crontab_hour, minute=crontab_minute)
     if(now<limit_time):
         return True
     else:
         return False
+

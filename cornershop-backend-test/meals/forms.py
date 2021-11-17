@@ -9,5 +9,5 @@ class CreateMealForm(ModelForm):
         labels = {
             'name': 'Name:',
             'description' : 'Meal description:',
-            'meal_date' : 'Date (YYYY/MM/DD):'
+            'meal_date' : 'Date (YYYY-MM-DD):'
         }

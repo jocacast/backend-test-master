@@ -1,0 +1,24 @@
+{%extends 'main.html'%}
+{%block content%}
+<form method="POST" action="" class="form auth__form">
+    {%csrf_token%}
+    {% for field in form %}
+    <div>
+        <label>{{field.label}} </label>
+    </br>
+        {{field}}
+        {%for error in field.errors%}
+            <p style="color:red">{{error}}</p>
+        {%endfor%}
+      </div>
+    
+    {%endfor%}
+    </br>
+    {% if messages %}
+    {% for message in messages %}
+        <p style="color:green">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+
+    <input type="submit" value="Update" />
+{%endblock%}

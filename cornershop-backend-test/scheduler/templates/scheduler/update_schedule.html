@@ -1,0 +1,14 @@
+{%extends 'main.html'%}
+{%block content%}
+<form method="POST" action="" class="form auth__form">
+    {%csrf_token%}
+    
+    </br>
+    <label for='new_hour'>Current hour:</label><br/>
+    <input name=new_hour id='new_hour' value={{periodic_task.crontab.hour}}><br/><br/>
+    <label for='new_minute'>Current minute:</label><br/>
+    <input name="new_minute" id='new_minute' value={{periodic_task.crontab.minute}}><br/>
+    <br/>
+    <input type="submit" value="Update" />
+</form>
+{%endblock%}

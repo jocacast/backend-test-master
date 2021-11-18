@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm
-from .tasks import add
 
 
 def loginUser(request):
@@ -43,7 +42,6 @@ def registerUser(request):
             login(request, user)
             return redirect('main')
         else:
-            print('Error ocurred during registration')
             messages.success(request, 'An error has ocurred during registration')
 
     context = {

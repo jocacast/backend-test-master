@@ -22,7 +22,6 @@ def createMeal(request):
         if form.is_valid():
             meal = form.save()
             meal.save()
-            messages.success(request, 'Meal successfully created')
             return redirect('read_meals')
         else:
             messages.success(request, 'An error has ocurred during meal creation')
@@ -33,19 +32,34 @@ def createMeal(request):
 def readMeals(request):
     if not request.user.is_superuser:
         return render(request, 'main.html')
-    meals = Meal.objects.all()
+    meals = Meal.objects.all().order_by('-meal_date')
     periodic_task = PeriodicTask.objects.get(name='send-slack-message')
     crontab_hour = periodic_task.crontab.hour
     crontab_minute = periodic_task.crontab.minute
     crontab_timezone = periodic_task.crontab.timezone
     context = {
         'meals': meals, 
-        'is_editable' : isEditable(crontab_hour=crontab_hour, crontab_minute = crontab_minute),
+        #'is_editable' : isEditable(crontab_hour=crontab_hour, crontab_minute = crontab_minute),
+        'is_editable' : True,
         'crontab_hour' : crontab_hour,
         'crontab_timezone' : crontab_timezone,
         'crontab_minute' : crontab_minute
         }
     return render(request, 'meals/read.html', context)
+
+def readTodaysMeals(request):
+    meals = Meal.objects.all().filter(meal_date = datetime.now())
+    now = datetime.now()
+    time_limit = now.replace(hour = 23, minute=0)
+    if now > time_limit:
+        can_order = False
+    else:
+        can_order=True
+    context = {
+        'meals' : meals,
+        'can_order' : can_order
+    }
+    return render(request, 'meals/read_today.html', context)
 
 @login_required(login_url='login_user')
 def updateMeal(request,pk):
@@ -78,13 +92,13 @@ def deleteMeal(request, pk):
     }
     return render(request, 'meals/confirm_delete.html' , context)
 
-def isEditable(crontab_hour, crontab_minute):
-    now = datetime.now()
-    crontab_hour = int(crontab_hour)
-    crontab_minute = int(crontab_minute)
-    limit_time = now.replace(hour = crontab_hour, minute=crontab_minute)
-    if(now<limit_time):
-        return True
-    else:
-        return False
+#def isEditable(crontab_hour, crontab_minute):
+    #now = datetime.now()
+    #crontab_hour = int(crontab_hour)
+    #crontab_minute = int(crontab_minute)
+    #limit_time = now.replace(hour = crontab_hour, minute=crontab_minute)
+    #if(now<limit_time):
+        #return True
+    #else:
+        #return False
 

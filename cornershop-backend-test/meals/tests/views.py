@@ -13,6 +13,7 @@ class TestAppViews(TestCase):
         
         self.create_meal_url = reverse('create_meal')
         self.read_meals_url = reverse('read_meals')
+        self.read_todays_meals_url = reverse('todays_meal')
         
         
         self.su_credentials = {
@@ -134,6 +135,11 @@ class TestAppViews(TestCase):
         response = self.client.post(delete_meal)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'main.html')
+
+    def test_read_todays_meals(self):
+        response = self.client.get(self.read_todays_meals_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'meals/read_today.html')
 
         
 

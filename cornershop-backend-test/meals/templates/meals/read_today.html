@@ -1,15 +1,17 @@
 {%extends 'main.html'%}
 {%block content%}
-    <h1>My Created Meals</h1>
+    <h1>Today´s Meals</h1>
     <!--<p>Meals can only be edited and deleted before the slack message is sent (currently {{crontab_hour}} hours {{crontab_minute}} minutes {{crontab_timezone}})</p>-->
     <hr/>
     {%for meal in meals%}
         <h2>{{meal.name}}</h2>
         <p>{{meal.description}}</p>
-        <p>Meal for day: {{meal.meal_date}}</p>
-        {%if is_editable%}
-        <p><a href="{% url 'update_meal' meal.id%}">Update</a> <a href="{%url 'delete_meal' meal.id%}">Delete</a></p>
+        {% if request.user.is_authenticated %}
+            {%if not request.user.is_superuser and can_order%}
+                <p><a href="{%url 'create_order' meal.id%}">Order</a>
+            {%endif%}
         {%endif%}
         <p>------------------</p>
+
     {%endfor%}
 {%endblock%}

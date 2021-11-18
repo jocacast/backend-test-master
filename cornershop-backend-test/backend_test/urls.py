@@ -8,4 +8,5 @@ urlpatterns = [
     path("meals/", include('meals.urls')),
     path("", include('users.urls')),
     path('scheduler/', include('scheduler.urls')),
+    path('orders/', include('orders.urls')),
 ]

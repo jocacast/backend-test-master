@@ -11,14 +11,16 @@
         {%if request.user.is_superuser%}
         <li><a href="{%url 'create_meal' %}">Create Meal || </a></li>
         <li><a href="{%url 'read_meals' %}">My Created Meals || </a></li>
-        <li><a href="{%url 'logout_user' %}">Check Orders || </a></li>
-        <li><a href="{%url 'update_schedule' %}">Schedule Message(?) || </a></li>
+        <li><a href="{%url 'todays_meal' %}">Today´s Lunch || </a></li>
+        <li><a href="{%url 'all_orders' %}">Check Orders || </a></li>
+        <li><a href="{%url 'update_schedule' %}">Schedule Slack Message|| </a></li>
         {%else%}
-        <li><a href="{%url 'logout_user' %}">My Orders || </a></li>
-        <li><a href="{%url 'logout_user' %}">My Current Order (shoping cart) || </a></li>
+        <li><a href="{%url 'todays_meal' %}">Today´s Lunch || </a></li>
+        <li><a href="{%url 'my_orders' %}">My Orders || </a></li>
         {%endif%}
         <li><a href="{%url 'logout_user' %}">Logout</a></li>
       {%else%}
+        <p>In order to create orders, please Login</p>
         <li><a href="{%url 'login_user' %}">Login</a></li>
       {%endif%}
     </ul>

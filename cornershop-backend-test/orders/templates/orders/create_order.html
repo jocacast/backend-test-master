@@ -1,0 +1,21 @@
+{%extends 'main.html'%}
+{%block content%}
+<h1>Create Order</h1>
+<form method="POST" action="{% url 'create_order' form.meal.id %}"class="form">
+    {%csrf_token%}
+    {% for field in form %}
+    <p>Selected Meal: {{form.meal}}</p>
+    <p>Meal Description: {{form.meal.description}}
+    <div>
+        <label>{{field.label}} </label>
+        <br/>
+        {{field}}
+        {%for error in field.errors%}
+            <p style="color:red">{{error}}</p>
+        {%endfor%}
+      </div>
+      
+    {%endfor%}
+    <br/>
+    <input type="submit" value="Create Order" />
+{%endblock%}

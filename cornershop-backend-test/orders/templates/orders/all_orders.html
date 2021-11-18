@@ -1,0 +1,14 @@
+{%extends 'main.html'%}
+{%block content%}
+    <h1>Orders</h1>
+    <hr/>
+    {%for order in orders%}
+        <p><b>Order date: {{order.created_date}}</b></p>
+        <b>User: {{order.profile.username}}</b>
+        <p>Meal: {{order.meal.name}}</p>
+        <p>Special requirements:</p>
+        <p>{{order.special_requirements}}</p>
+        <hr/>
+
+    {%endfor%}
+{%endblock%}

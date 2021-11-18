@@ -20,8 +20,10 @@
         {%endif%}
         <li><a href="{%url 'logout_user' %}">Logout</a></li>
       {%else%}
-        <p>In order to create orders, please Login</p>
+        <p>In order to create orders, please Login or Sign in if you don´t have an account</p>
         <li><a href="{%url 'login_user' %}">Login</a></li>
+        <br/>
+        <l1><a href="{%url 'register_user'%}">Sign in </a></l1> 
       {%endif%}
     </ul>
   </div>

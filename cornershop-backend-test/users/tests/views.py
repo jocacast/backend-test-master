@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.contrib.auth.models import User
 from users.tasks import send_mail_func
+import os
+from unittest.mock import patch
 
 
 class TestAppViews(TestCase):
@@ -73,9 +75,4 @@ class TestAppViews(TestCase):
         self.assertRaises(Exception, self.client.post(self.register_url, self.incorrect_register_form))
 
 
-    def no_test_send_email_task(self):
-        rst = send_mail_func.apply().get()
-        self.assertEquals("Done" , rst)
-
-    
     

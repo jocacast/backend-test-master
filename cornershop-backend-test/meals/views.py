@@ -2,6 +2,7 @@ from django.http.request import HttpRequest
 from django.shortcuts import render, redirect
 from .forms import CreateMealForm
 from .models import Meal
+from orders.models import Order
 from django.contrib import messages
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -85,7 +86,9 @@ def deleteMeal(request, pk):
         return render (request, 'main.html')
     meal = Meal.objects.get(id=pk)
     if request.method == 'POST':
+        #order = Order.objects.get(meal=meal)
         meal.delete()
+        
         return redirect('read_meals')
     context = {
         'meal': meal
